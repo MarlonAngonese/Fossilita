@@ -1,0 +1,21 @@
+#:kivy 2.1.0
+
+Manager:
+
+<Manager>
+    VolumetriaScreen:
+        name: "volumetria"
+
+<VolumetriaScreen>
+    
+    MDFloatLayout:
+
+        MDTopAppBar:
+            title: "MDTopAppBar"
+            pos_hint: {"top": 1}
+
+        MDLabel:
+            text: "Cálculo de Volume"
+            halign: "center"
+            pos_hint: {"center_x": .5, "center_y": .8}
+            font_style: "H6"
