@@ -3,19 +3,149 @@
 Manager:
 
 <Manager>
-    VolumetriaScreen:
-        name: "volumetria"
+    CalculoDeVolumeScreen:
+        name: "calculo_de_volume"
+    TipoDeEdificacaoScreen:
+        name: "tipo_de_edificacao"
 
-<VolumetriaScreen>
+<CalculoDeVolumeScreen>
     
     MDFloatLayout:
 
         MDTopAppBar:
-            title: "MDTopAppBar"
+            title: "Fossilita - Volume Útil"
             pos_hint: {"top": 1}
 
         MDLabel:
-            text: "Cálculo de Volume"
-            halign: "center"
+            text: "Cálculo de Volume Útil"
+            halign: "left"
             pos_hint: {"center_x": .5, "center_y": .8}
+            size_hint_x: 0.79
             font_style: "H6"
+            canvas.before:
+                Color:
+                    rgba: 0, 0.685, 1, 1
+                Line:
+                    width: 1
+                    points: [self.x, self.height - self.y * 0.75, self.x + self.width, self.height - self.y * 0.75]
+
+        MDLabel:
+            text: "Tipo de Edificação"
+            halign: "left"
+            pos_hint: {"center_x": .6, "center_y": .7}
+            font_style: "Caption"
+            theme_text_color: "Secondary"
+
+        MDLabel:
+            text: "Número de Pessoas"
+            halign: "left"
+            pos_hint: {"center_x": .6, "center_y": .58}
+            font_style: "Caption"
+            theme_text_color: "Secondary"
+
+        MDLabel:
+            text: "Temperatura Média (C°)"
+            halign: "left"
+            pos_hint: {"center_x": .6, "center_y": .48}
+            font_style: "Caption"
+            theme_text_color: "Secondary"
+        
+        MDDropDownItem:
+            id: dropdown_tipo_de_edificacao
+            pos_hint: {"center_x": .5, "center_y": .65}
+            size_hint_x: 0.81
+            text: 'Selecione uma opção'
+            font_size: '14sp'
+            on_release: app.change_screen(self, 'tipo_de_edificao')
+
+        MDTextField:
+            id: textbox_numero_de_pessoas
+            pos_hint: {"center_x": .5, "center_y": .55}
+            size_hint_x: 0.79
+            input_filter: 'int'
+            line_color_normal: 0, 0, 0, 0.2
+            text_color_normal: 0, 0, 0, 1
+
+        MDTextField:
+            id: textbox_temperatura_media
+            pos_hint: {"center_x": .5, "center_y": .45}
+            size_hint_x: 0.79
+            input_filter: 'int'
+            line_color_normal: 0, 0, 0, 0.2
+            text_color_normal: 0, 0, 0, 1
+
+        MDRaisedButton:
+            id: send_button
+            text: "Calcular"
+            pos_hint: {"center_x": .5, "center_y": .35}
+            size_hint_x: 0.8
+            on_release: app.calculate_volume_util()
+
+        MDLabel:
+            id: label_mostrar_resultado
+            text: ""
+            pos_hint: {"center_x": .5, "center_y": .25}
+            size_hint_x: 0.8
+            halign: "left"
+
+<TipoDeEdificacaoScreen>
+
+    MDFloatLayout:
+        MDTopAppBar:
+            title: "Fossilita - Edificação"
+            pos_hint: {"top": 1}
+
+        MDLabel:
+            text: "Tipo de Edificação:"
+            halign: "left"
+            pos_hint: {"center_x": .5, "center_y": .8}
+            size_hint_x: 0.79
+            font_style: "H6"
+            canvas.before:
+                Color:
+                    rgba: 0, 0.685, 1, 1
+                Line:
+                    width: 1
+                    points: [self.x, self.height - self.y * 0.75, self.x + self.width, self.height - self.y * 0.75]
+
+    MDBoxLayout:
+        size_hint_x: .8
+        orientation: 'vertical'
+        adaptive_height: True
+        pos_hint: {'top': .75, "center_x": .5}
+
+        ScrollView:
+            id: tipo_de_edificacao_scrollview
+            size_hint: (1, None)
+
+            MDList:
+                OneLineListItem:
+                    text: "Residência"
+                    on_release: app.choose_option_tipo_de_edificacao(self)
+                OneLineListItem:
+                    text: "Alojamento Provisório"
+                    on_release: app.choose_option_tipo_de_edificacao(self)
+                OneLineListItem:
+                    text: "Fábrica em Geral"
+                    on_release: app.choose_option_tipo_de_edificacao(self)
+                OneLineListItem:
+                    text: "Escritório"
+                    on_release: app.choose_option_tipo_de_edificacao(self)
+                OneLineListItem:
+                    text: "Edifícios Públicos ou Comerciais"
+                    on_release: app.choose_option_tipo_de_edificacao(self)
+                OneLineListItem:
+                    text: "Escolas ou Locais de Longa Permanência"
+                    on_release: app.choose_option_tipo_de_edificacao(self)
+                OneLineListItem:
+                    text: "Bares"
+                    on_release: app.choose_option_tipo_de_edificacao(self)
+                OneLineListItem:
+                    text: "Restaurantes e Similares"
+                    on_release: app.choose_option_tipo_de_edificacao(self)
+                OneLineListItem:
+                    text: "Cinemas, Teatros e Locais de Curta Permanência"
+                    on_release: app.choose_option_tipo_de_edificacao(self)
+                OneLineListItem:
+                    text: "Sanitários Públicos"
+                    on_release: app.choose_option_tipo_de_edificacao(self)
