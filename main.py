@@ -1,16 +1,23 @@
 from kivy.lang import Builder
 from kivy.core.window import Window
-
+from kivy.config import Config
 from kivymd.app import MDApp
 from kivy.uix.screenmanager import ScreenManager
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.menu import MDDropdownMenu
 
-Window.size = (720 , 640)
+Window.size = (350 , 640)
+
 class Manager(ScreenManager):
     pass
 
+class InformacoesImportantesScreen(MDScreen):
+    pass
+
 class CalculoDeVolumeScreen(MDScreen):
+    pass
+
+class HomeScreen(MDScreen):
     pass
 
 class TipoDeEdificacaoScreen(MDScreen):
@@ -24,6 +31,8 @@ class Fossilita(MDApp):
         self.screenmanager = Builder.load_file('./main.kv')
 
     def build(self):
+        self.theme_cls.primary_palette = "Blue"
+        self.theme_cls.primary_hue = '900'
         return self.screenmanager
     
     def change_screen(self, button, target):

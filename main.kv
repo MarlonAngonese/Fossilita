@@ -3,13 +3,114 @@
 Manager:
 
 <Manager>
+
+    # Primeira tela a carregar, o resto são listas de telas válidas
+    InformacoesImportantesScreen:
+        name: "informacoes_importantes"
     CalculoDeVolumeScreen:
         name: "calculo_de_volume"
+    HomeScreen:
+        name: "home"
     TipoDeEdificacaoScreen:
         name: "tipo_de_edificacao"
 
+<HomeScreen>
+    MDFloatLayout:
+
+        MDTopAppBar:
+            title: "Fossilita"
+            pos_hint: {"top": 1}
+            left_action_items: [["check-bold"]]
+            right_action_items: [["home"]]
+
+        MDLabel:
+            text: "Olá,"
+            font_style: "H3"
+            pos_hint: {"center_x": .6, "center_y": .75}
+            color: '#3053f0'
+        
+        MDLabel:
+            text: "como posso ajudar?"
+            font_style: "H6"
+            pos_hint: {"center_x": .6, "center_y": .69}
+            color: '#3053f0'
+
+        MDRaisedButton:
+            text: "Fossa Séptica"
+            pos_hint: {"center_x": .5, "center_y": .58}
+            size_hint_x: 0.8
+        
+        MDRaisedButton:
+            text: "Filtro Anaeróbio"
+            pos_hint: {"center_x": .5, "center_y": .48}
+            size_hint_x: 0.8
+
+        MDRaisedButton:
+            text: "Sumidouro/Vala de Infiltração"
+            pos_hint: {"center_x": .5, "center_y": .38}
+            size_hint_x: 0.8
+
+        MDRaisedButton:
+            text: "Informações Importantes"
+            pos_hint: {"center_x": .5, "center_y": .28}
+            size_hint_x: 0.8
+
+<InformacoesImportantesScreen>
+    MDFloatLayout:
+
+        MDTopAppBar:
+            title: "Fossilita"
+            pos_hint: {"top": 1}
+            left_action_items: [["check-bold"]]
+            right_action_items: [["home"]]
+
+        MDLabel:
+            text: "Olá! Sobre o que você quer ler?"
+            font_style: "H6"
+            pos_hint: {"center_x": .6, "center_y": .8}
+            color: '#3053f0'
+
+        MDRaisedButton:
+            text: "Sistema de Tratamento"
+            pos_hint: {"center_x": .5, "center_y": .7}
+            size_hint_x: 0.8
+
+        MDRaisedButton:
+            text: "Intervalo de Limpeza"
+            pos_hint: {"center_x": .5, "center_y": .62}
+            size_hint_x: 0.8
+        
+        MDRaisedButton:
+            text: "Funcionamento do Tanque Séptico"
+            pos_hint: {"center_x": .5, "center_y": .54}
+            size_hint_x: 0.8
+
+        MDRaisedButton:
+            text: "Dimensionamento de Tanque Séptico"
+            pos_hint: {"center_x": .5, "center_y": .46}
+            size_hint_x: 0.8
+
+        MDRaisedButton:
+            text: "Dimensionamento de Filtro Anaeróbio"
+            pos_hint: {"center_x": .5, "center_y": .38}
+            size_hint_x: 0.8
+
+        MDRaisedButton:
+            text: "Tipos de Sumidouro e Como Calcular"
+            pos_hint: {"center_x": .5, "center_y": .30}
+            size_hint_x: 0.8
+
+        MDRaisedButton:
+            text: "Dimensionamento de Vala de Infiltração"
+            pos_hint: {"center_x": .5, "center_y": .22}
+            size_hint_x: 0.8
+
+        MDRaisedButton:
+            text: "Manual de Boas Práticas"
+            pos_hint: {"center_x": .5, "center_y": .14}
+            size_hint_x: 0.8
+
 <CalculoDeVolumeScreen>
-    
     MDFloatLayout:
 
         MDTopAppBar:
