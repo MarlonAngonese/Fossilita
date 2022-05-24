@@ -5,12 +5,12 @@ Manager:
 <Manager>
 
     # Primeira tela a carregar, o resto são listas de telas válidas
+    HomeScreen:
+        name: "home"
     InformacoesImportantesScreen:
         name: "informacoes_importantes"
     CalculoDeVolumeScreen:
         name: "calculo_de_volume"
-    HomeScreen:
-        name: "home"
     TipoDeEdificacaoScreen:
         name: "tipo_de_edificacao"
 
@@ -39,6 +39,9 @@ Manager:
             text: "Fossa Séptica"
             pos_hint: {"center_x": .5, "center_y": .58}
             size_hint_x: 0.8
+            on_release:
+                app.screenmanager.current = "calculo_de_volume"
+                app.screenmanager.transition.direction = "left"
         
         MDRaisedButton:
             text: "Filtro Anaeróbio"
@@ -54,6 +57,9 @@ Manager:
             text: "Informações Importantes"
             pos_hint: {"center_x": .5, "center_y": .28}
             size_hint_x: 0.8
+            on_release:
+                app.screenmanager.current = "informacoes_importantes"
+                app.screenmanager.transition.direction = "left"
 
 <InformacoesImportantesScreen>
     MDFloatLayout:
@@ -61,8 +67,8 @@ Manager:
         MDTopAppBar:
             title: "Fossilita"
             pos_hint: {"top": 1}
-            left_action_items: [["check-bold"]]
-            right_action_items: [["home"]]
+            left_action_items: [["arrow-left", lambda x: app.return_right_to('home')],["check-bold"]]
+            right_action_items: [["home", lambda x: app.return_to_home()]]
 
         MDLabel:
             text: "Olá! Sobre o que você quer ler?"
@@ -114,8 +120,10 @@ Manager:
     MDFloatLayout:
 
         MDTopAppBar:
-            title: "Fossilita - Volume Útil"
+            title: "Fossa Séptica"
             pos_hint: {"top": 1}
+            left_action_items: [["arrow-left", lambda x: app.return_right_to('home')],["check-bold"]]
+            right_action_items: [["home", lambda x: app.return_to_home()]]
 
         MDLabel:
             text: "Cálculo de Volume Útil"
@@ -123,9 +131,10 @@ Manager:
             pos_hint: {"center_x": .5, "center_y": .8}
             size_hint_x: 0.79
             font_style: "H6"
+            color: '#3053f0'
             canvas.before:
                 Color:
-                    rgba: 0, 0.685, 1, 1
+                    rgba: 0, 0, 1, 1
                 Line:
                     width: 1
                     points: [self.x, self.height - self.y * 0.75, self.x + self.width, self.height - self.y * 0.75]
@@ -157,7 +166,7 @@ Manager:
             size_hint_x: 0.81
             text: 'Selecione uma opção'
             font_size: '14sp'
-            on_release: app.change_screen(self, 'tipo_de_edificao')
+            on_release: app.change_tipo_de_edificacao_screen()
 
         MDTextField:
             id: textbox_numero_de_pessoas
@@ -192,9 +201,12 @@ Manager:
 <TipoDeEdificacaoScreen>
 
     MDFloatLayout:
+
         MDTopAppBar:
-            title: "Fossilita - Edificação"
+            title: "Fossa Séptica"
             pos_hint: {"top": 1}
+            left_action_items: [["arrow-left", lambda x: app.return_right_to('calculo_de_volume')], ["check-bold"]]
+            right_action_items: [["home", lambda x: app.return_to_home()]]
 
         MDLabel:
             text: "Tipo de Edificação:"
@@ -202,9 +214,10 @@ Manager:
             pos_hint: {"center_x": .5, "center_y": .8}
             size_hint_x: 0.79
             font_style: "H6"
+            color: '#3053f0'
             canvas.before:
                 Color:
-                    rgba: 0, 0.685, 1, 1
+                    rgba: 0, 0, 1, 1
                 Line:
                     width: 1
                     points: [self.x, self.height - self.y * 0.75, self.x + self.width, self.height - self.y * 0.75]

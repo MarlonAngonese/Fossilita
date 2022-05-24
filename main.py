@@ -35,14 +35,21 @@ class Fossilita(MDApp):
         self.theme_cls.primary_hue = '900'
         return self.screenmanager
     
-    def change_screen(self, button, target):
+    def change_tipo_de_edificacao_screen(self):
         self.screenmanager.current = "tipo_de_edificacao"
         self.screenmanager.transition.direction = "left"
 
         self.screenmanager.get_screen('tipo_de_edificacao').ids.tipo_de_edificacao_scrollview.size = (Window.width, Window.height)
 
-    def calculate_volume_util(self):
+    def return_to_home(self):
+        self.screenmanager.current = "home"
+        self.screenmanager.transition.direction = "right"
 
+    def return_right_to(self, target):
+        self.screenmanager.current = target
+        self.screenmanager.transition.direction = "right"
+
+    def calculate_volume_util(self):
         Edificacao = self.screenmanager.get_screen('calculo_de_volume').ids.dropdown_tipo_de_edificacao.text # Tipo de Edificação
         Np = int(self.screenmanager.get_screen('calculo_de_volume').ids.textbox_numero_de_pessoas.text) # Número de Pessoas
         Temperatura_media = int(self.screenmanager.get_screen('calculo_de_volume').ids.textbox_temperatura_media.text)  # Temperatura Média
