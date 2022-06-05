@@ -6,6 +6,8 @@ from kivy.uix.screenmanager import ScreenManager
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.menu import MDDropdownMenu
 
+from fossilita import Intervalo_limpeza
+
 Window.size = (350 , 640)
 
 class Manager(ScreenManager):
@@ -21,6 +23,9 @@ class HomeScreen(MDScreen):
     pass
 
 class TipoDeEdificacaoScreen(MDScreen):
+    pass
+
+class ResultadoFossaScreen(MDScreen):
     pass
 
 class Fossilita(MDApp):
@@ -49,10 +54,15 @@ class Fossilita(MDApp):
         self.screenmanager.current = target
         self.screenmanager.transition.direction = "right"
 
+    def return_left_to(self, target):
+        self.screenmanager.current = target
+        self.screenmanager.transition.direction = "left"
+
     def calculate_volume_util(self):
         Edificacao = self.screenmanager.get_screen('calculo_de_volume').ids.dropdown_tipo_de_edificacao.text # Tipo de Edificação
         Np = int(self.screenmanager.get_screen('calculo_de_volume').ids.textbox_numero_de_pessoas.text) # Número de Pessoas
         Temperatura_media = int(self.screenmanager.get_screen('calculo_de_volume').ids.textbox_temperatura_media.text)  # Temperatura Média
+        Intervalo_limpeza = int(self.screenmanager.get_screen('calculo_de_volume').ids.textbox_intervalo_limpeza.text) # Intervalo de Limpeza
 
         C = False #Contribuição de Esgoto por Unidade
         T = False #Tempo de detenção
@@ -108,22 +118,72 @@ class Fossilita(MDApp):
         elif (Cd >= 9001):
             T = 12
 
-        if (Temperatura_media < 10):
+        if (Temperatura_media < 10 and Intervalo_limpeza == 1):
+            K = 94
+
+        elif (Temperatura_media < 10 and Intervalo_limpeza == 2):
+            K = 134
+
+        elif (Temperatura_media < 10 and Intervalo_limpeza == 3):
+            K = 174
+
+        elif (Temperatura_media < 10 and Intervalo_limpeza == 4):
+            K = 214
+
+        elif (Temperatura_media < 10 and Intervalo_limpeza == 5):
             K = 254
-        elif (Temperatura_media >= 11 and Temperatura_media <= 20):
+
+        elif (Temperatura_media >= 11 and Temperatura_media <= 20 and Intervalo_limpeza == 1):
+            K = 65
+
+        elif (Temperatura_media >= 11 and Temperatura_media <= 20 and Intervalo_limpeza == 2):
+            K = 105
+
+        elif (Temperatura_media >= 11 and Temperatura_media <= 20 and Intervalo_limpeza == 3):
+            K = 145
+
+        elif (Temperatura_media >= 11 and Temperatura_media <= 20 and Intervalo_limpeza == 4):
+            K = 185
+
+        elif (Temperatura_media >= 11 and Temperatura_media <= 20 and Intervalo_limpeza == 5):
             K = 225
 
-        elif (Temperatura_media >= 21):
+
+        elif (Temperatura_media >= 21 and Intervalo_limpeza == 1):
+            K = 57
+
+        elif (Temperatura_media >= 21 and Intervalo_limpeza == 2):
+            K = 97
+
+        elif (Temperatura_media >= 21 and Intervalo_limpeza == 3):
+            K = 137
+
+        elif (Temperatura_media >= 21 and Intervalo_limpeza == 4):
+            K = 177
+
+        elif (Temperatura_media >= 21 and Intervalo_limpeza == 5):
             K = 217
 
-        Volume_util = 1000 + Np * (C * T + K + Lf)
+        Volume_util = float(1000 + Np * (C * T + K + Lf))
 
-        self.screenmanager.get_screen('calculo_de_volume').ids.label_mostrar_resultado.text = "Volume Útil: " + str(Volume_util) + " litros"
+        self.screenmanager.current = "resultado_fossa"
+        self.screenmanager.transition.direction = "left"
+
+        self.screenmanager.get_screen('resultado_fossa').ids.label_resultado_fossa.text = f'{Volume_util} litros'
 
     def choose_option_tipo_de_edificacao(self, option):
         self.screenmanager.current = "calculo_de_volume"
         self.screenmanager.transition.direction = "right"
 
         self.screenmanager.get_screen('calculo_de_volume').ids.dropdown_tipo_de_edificacao.text = option.text
+
+        if (option.text == "Restaurantes e Similares" or option.text == "Bares"):
+            self.screenmanager.get_screen('calculo_de_volume').ids.label_numero_de.text = "Número de Refeições"
+        elif (option.text == "Cinemas, Teatros e Locais de Curta Permanência"):
+            self.screenmanager.get_screen('calculo_de_volume').ids.label_numero_de.text = "Número de Lugares"
+        elif (option.text == "Sanitários Públicos"):
+            self.screenmanager.get_screen('calculo_de_volume').ids.label_numero_de.text = "Número de Bacias Sanitárias"
+        else:
+            self.screenmanager.get_screen('calculo_de_volume').ids.label_numero_de.text = "Número de Pessoas"
 
 Fossilita().run()
