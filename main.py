@@ -36,7 +36,7 @@ class Fossilita(MDApp):
         self.screenmanager = Builder.load_file('./main.kv')
 
     def build(self):
-        self.theme_cls.primary_palette = "Blue"
+        self.theme_cls.primary_palette = "Indigo"
         self.theme_cls.primary_hue = '900'
         return self.screenmanager
     
@@ -164,7 +164,7 @@ class Fossilita(MDApp):
         elif (Temperatura_media >= 21 and Intervalo_limpeza == 5):
             K = 217
 
-        Volume_util = float(1000 + Np * (C * T + K + Lf))
+        Volume_util = round(float(1000 + Np * (C * T + K + Lf)), 2)
 
         self.screenmanager.current = "resultado_fossa"
         self.screenmanager.transition.direction = "left"
