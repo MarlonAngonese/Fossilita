@@ -5,6 +5,8 @@ Manager:
 <Manager>
 
     # Primeira tela a carregar, o resto são listas de telas válidas
+    FiltroAnaerobioScreen:
+        name: "filtro_anaerobio"
     ResultadoFossaScreen:
         name: "resultado_fossa"
     HomeScreen:
@@ -49,6 +51,9 @@ Manager:
             text: "Filtro Anaeróbio"
             pos_hint: {"center_x": .5, "center_y": .48}
             size_hint_x: 0.8
+            on_release:
+                app.screenmanager.current = "filtro_anaerobio"
+                app.screenmanager.transition.direction = "left"
 
         MDRaisedButton:
             text: "Sumidouro/Vala de Infiltração"
@@ -176,7 +181,7 @@ Manager:
             size_hint_x: 0.81
             text: 'Selecione uma opção'
             font_size: '14sp'
-            on_release: app.change_tipo_de_edificacao_screen()
+            on_release: app.change_tipo_de_edificacao_screen('calculo_de_volume')
 
         MDTextField:
             id: textbox_numero_de_pessoas
@@ -214,8 +219,8 @@ Manager:
                 Color:
                     rgba: 0, .4, 1, .2
                 Rectangle:
-                    pos: (0, self.center_y - (self.center_y * 0.22))
-                    size: (self.width, self.height + 20)
+                    pos: (0, self.center_y - 46)
+                    size: (self.width, self.height * 1.5)
 
         MDRaisedButton:
             id: send_button
@@ -231,7 +236,7 @@ Manager:
         MDTopAppBar:
             title: "Fossa Séptica"
             pos_hint: {"top": 1}
-            left_action_items: [["arrow-left", lambda x: app.return_right_to('calculo_de_volume')], ["check-bold"]]
+            left_action_items: [["arrow-left", lambda x: app.tipo_de_edificacao_return_to()], ["check-bold"]]
             right_action_items: [["home", lambda x: app.return_to_home()]]
 
         MDLabel:
@@ -342,4 +347,65 @@ Manager:
             pos_hint: {"center_x": .5, "center_y": .25}
             size_hint_x: 0.8
             on_release: app.return_left_to('informacoes_importantes')
+
+<FiltroAnaerobioScreen>
+    MDFloatLayout:
+
+        MDTopAppBar:
+            title: "Filtro Anaeróbio"
+            pos_hint: {"top": 1}
+            left_action_items: [["arrow-left", lambda x: app.return_right_to('home')],["check-bold"]]
+            right_action_items: [["home", lambda x: app.return_to_home()]]
+
+        MDLabel:
+            text: "Cálculo de Filtro Anaeróbio"
+            halign: "left"
+            pos_hint: {"center_x": .5, "center_y": .82}
+            size_hint_x: 0.79
+            font_style: "H6"
+            color: '#35506d'
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 1, 1
+                Line:
+                    width: 1
+                    points: [self.x, self.height - self.y * 0.64, self.x + self.width, self.height - self.y * 0.64]
+
+        MDLabel:
+            text: "Tipo de Edificação"
+            halign: "left"
+            pos_hint: {"center_x": .6, "center_y": .74}
+            font_style: "Caption"
+            theme_text_color: "Secondary"
+
+        MDDropDownItem:
+            id: dropdown_tipo_de_edificacao
+            pos_hint: {"center_x": .5, "center_y": .69}
+            size_hint_x: 0.81
+            text: 'Selecione uma opção'
+            font_size: '14sp'
+            on_release: app.change_tipo_de_edificacao_screen('filtro_anaerobio')
+
+        MDLabel:
+            id: label_numero_de
+            text: "Número de Pessoas"
+            halign: "left"
+            pos_hint: {"center_x": .6, "center_y": .62}
+            font_style: "Caption"
+            theme_text_color: "Secondary"
+
+        MDTextField:
+            id: textbox_numero_de_pessoas
+            pos_hint: {"center_x": .5, "center_y": .59}
+            size_hint_x: 0.79
+            input_filter: 'int'
+            line_color_normal: 0, 0, 0, 0.2
+            text_color_normal: 0, 0, 0, 1
+
+        MDRaisedButton:
+            id: send_button
+            text: "Mostre-me o resultado!"
+            pos_hint: {"center_x": .5, "center_y": .49}
+            size_hint_x: 0.8
+            on_release: app.calculate_volume_util()
 

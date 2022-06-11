@@ -6,12 +6,37 @@ from kivy.uix.screenmanager import ScreenManager
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.menu import MDDropdownMenu
 
-from fossilita import Intervalo_limpeza
-
 Window.size = (350 , 640)
+CURRENT_SCREEN = False;
+APP = False;
 
 class Manager(ScreenManager):
-    pass
+    def __init__(self,**kwargs):
+        super(Manager,self).__init__(**kwargs)
+        #code goes here and add:
+        Window.bind(on_keyboard=self.Android_back_click)
+    
+    def Android_back_click(self,window,key,*largs):
+        global APP
+        global CURRENT_SCREEN
+        if key == 27:
+
+            if (APP.screenmanager.current == 'home'):
+                return True
+
+            if (APP.screenmanager.current == 'calculo_de_volume' or APP.screenmanager.current == 'filtro_anaerobio' or APP.screenmanager.current == 'informacoes_importantes'):
+                APP.screenmanager.current = 'home'
+                APP.screenmanager.transition.direction = "right"
+                return True
+
+            if (APP.screenmanager.current == 'tipo_de_edificacao'):
+                APP.tipo_de_edificacao_return_to()
+                return True
+
+            if (APP.screenmanager.current == 'resultado_fossa'):
+                APP.return_right_to('calculo_de_volume')
+                return True
+
 
 class InformacoesImportantesScreen(MDScreen):
     pass
@@ -28,35 +53,83 @@ class TipoDeEdificacaoScreen(MDScreen):
 class ResultadoFossaScreen(MDScreen):
     pass
 
+class FiltroAnaerobioScreen(MDScreen):
+    pass
+
 class Fossilita(MDApp):
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        
+        super().__init__(**kwargs)  
         self.screenmanager = Builder.load_file('./main.kv')
+        
+        global APP
+        APP = self
 
     def build(self):
         self.theme_cls.primary_palette = "Indigo"
         self.theme_cls.primary_hue = '900'
         return self.screenmanager
     
-    def change_tipo_de_edificacao_screen(self):
+    def change_tipo_de_edificacao_screen(self, screen):
+        global CURRENT_SCREEN
+
         self.screenmanager.current = "tipo_de_edificacao"
         self.screenmanager.transition.direction = "left"
 
         self.screenmanager.get_screen('tipo_de_edificacao').ids.tipo_de_edificacao_scrollview.size = (Window.width, Window.height)
 
+        CURRENT_SCREEN = screen
+        global APP
+        APP = self
+
+    def choose_option_tipo_de_edificacao(self, option):
+        global CURRENT_SCREEN
+
+        self.screenmanager.current = CURRENT_SCREEN
+        self.screenmanager.transition.direction = "right"
+
+        self.screenmanager.get_screen(CURRENT_SCREEN).ids.dropdown_tipo_de_edificacao.text = option.text
+
+        if (option.text == "Restaurantes e Similares" or option.text == "Bares"):
+            self.screenmanager.get_screen(CURRENT_SCREEN).ids.label_numero_de.text = "Número de Refeições"
+        elif (option.text == "Cinemas, Teatros e Locais de Curta Permanência"):
+            self.screenmanager.get_screen(CURRENT_SCREEN).ids.label_numero_de.text = "Número de Lugares"
+        elif (option.text == "Sanitários Públicos"):
+            self.screenmanager.get_screen(CURRENT_SCREEN).ids.label_numero_de.text = "Número de Bacias Sanitárias"
+        else:
+            self.screenmanager.get_screen(CURRENT_SCREEN).ids.label_numero_de.text = "Número de Pessoas"
+
+        global APP
+        APP = self
+
+    def tipo_de_edificacao_return_to(self):
+        global CURRENT_SCREEN
+        self.screenmanager.current = CURRENT_SCREEN
+        self.screenmanager.transition.direction = "right"
+
+        global APP
+        APP = self
+
     def return_to_home(self):
         self.screenmanager.current = "home"
         self.screenmanager.transition.direction = "right"
+
+        global APP
+        APP = self
 
     def return_right_to(self, target):
         self.screenmanager.current = target
         self.screenmanager.transition.direction = "right"
 
+        global APP
+        APP = self
+
     def return_left_to(self, target):
         self.screenmanager.current = target
         self.screenmanager.transition.direction = "left"
+
+        global APP
+        APP = self
 
     def calculate_volume_util(self):
         Edificacao = self.screenmanager.get_screen('calculo_de_volume').ids.dropdown_tipo_de_edificacao.text # Tipo de Edificação
@@ -164,26 +237,14 @@ class Fossilita(MDApp):
         elif (Temperatura_media >= 21 and Intervalo_limpeza == 5):
             K = 217
 
-        Volume_util = round(float(1000 + Np * (C * T + K + Lf)), 2)
+        Volume_util = round(1000 + Np * (C * T + K + Lf), 2)
 
         self.screenmanager.current = "resultado_fossa"
         self.screenmanager.transition.direction = "left"
 
         self.screenmanager.get_screen('resultado_fossa').ids.label_resultado_fossa.text = f'{Volume_util} litros'
 
-    def choose_option_tipo_de_edificacao(self, option):
-        self.screenmanager.current = "calculo_de_volume"
-        self.screenmanager.transition.direction = "right"
-
-        self.screenmanager.get_screen('calculo_de_volume').ids.dropdown_tipo_de_edificacao.text = option.text
-
-        if (option.text == "Restaurantes e Similares" or option.text == "Bares"):
-            self.screenmanager.get_screen('calculo_de_volume').ids.label_numero_de.text = "Número de Refeições"
-        elif (option.text == "Cinemas, Teatros e Locais de Curta Permanência"):
-            self.screenmanager.get_screen('calculo_de_volume').ids.label_numero_de.text = "Número de Lugares"
-        elif (option.text == "Sanitários Públicos"):
-            self.screenmanager.get_screen('calculo_de_volume').ids.label_numero_de.text = "Número de Bacias Sanitárias"
-        else:
-            self.screenmanager.get_screen('calculo_de_volume').ids.label_numero_de.text = "Número de Pessoas"
+        global APP
+        APP = self
 
 Fossilita().run()
