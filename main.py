@@ -4,7 +4,6 @@ from kivy.config import Config
 from kivymd.app import MDApp
 from kivy.uix.screenmanager import ScreenManager
 from kivymd.uix.screen import MDScreen
-from kivymd.uix.menu import MDDropdownMenu
 
 Window.size = (350 , 640)
 CURRENT_SCREEN = False;
@@ -37,6 +36,9 @@ class Manager(ScreenManager):
                 APP.return_right_to('calculo_de_volume')
                 return True
 
+            if (APP.screenmanager.current == 'intervalo_de_limpeza'):
+                APP.return_right_to('informacoes_importantes')
+                return True
 
 class InformacoesImportantesScreen(MDScreen):
     pass
@@ -53,7 +55,14 @@ class TipoDeEdificacaoScreen(MDScreen):
 class ResultadoFossaScreen(MDScreen):
     pass
 
+class ResultadoFiltroAnaerobioScreen(MDScreen):
+    pass
+
 class FiltroAnaerobioScreen(MDScreen):
+    pass
+
+# PDFS
+class IntervaloDeLimpezaScreen(MDScreen):
     pass
 
 class Fossilita(MDApp):
@@ -127,6 +136,15 @@ class Fossilita(MDApp):
     def return_left_to(self, target):
         self.screenmanager.current = target
         self.screenmanager.transition.direction = "left"
+
+        global APP
+        APP = self
+
+    def change_intervalo_de_limpeza_screen(self):
+        self.screenmanager.current = "intervalo_de_limpeza"
+        self.screenmanager.transition.direction = "left"
+
+        self.screenmanager.get_screen('intervalo_de_limpeza').ids.intervalo_de_limpeza_scrollview.size = (Window.width, Window.height)
 
         global APP
         APP = self
@@ -246,5 +264,80 @@ class Fossilita(MDApp):
 
         global APP
         APP = self
+
+    def calculate_filtro_anaerobio(self):
+        Edificacao = self.screenmanager.get_screen('filtro_anaerobio').ids.dropdown_tipo_de_edificacao.text # Tipo de Edificação
+        Np = int(self.screenmanager.get_screen('filtro_anaerobio').ids.textbox_numero_de_pessoas.text) # Número de Pessoas
+
+        C = False
+
+        if(Edificacao == "Residência"):
+            C = 200
+
+        elif(Edificacao == "Alojamento Provisório"):
+            C = 80
+
+        elif(Edificacao == "Fábrica em Geral"):
+            C = 70
+
+        elif(Edificacao == "Escritório"):
+            C = 50
+
+        elif(Edificacao == "Edifícios Públicos ou Comerciais"):
+            C = 50
+
+        elif(Edificacao == "Escolas ou Locais de Longa Permanência"):
+            C = 50
+
+        elif(Edificacao == "Bares"):
+            C = 6
+
+        elif(Edificacao == "Restaurantes e Similares"):
+            C = 25
+
+        elif(Edificacao == "Cinemas, Teatros e Locais de Curta Permanência"):
+            C = 2
+
+        elif(Edificacao == "Sanitários Públicos"):
+            C = 480
+
+        Cd = C * Np
+
+        if (Cd <= 1500):
+            T = 24
+
+        elif (Cd >= 1501 and Cd <= 3000):
+            T = 22
+
+        elif (Cd >= 3001 and Cd <= 4500):
+            T = 20
+
+        elif (Cd >= 4501 and Cd <= 6000):
+            T = 18
+
+        elif (Cd >= 6001 and Cd <= 7500):
+            T = 16
+
+        elif (Cd >= 7501 and Cd <= 9000):
+            T = 14
+
+        elif (Cd >= 9001):
+            T = 12
+
+        Volume_util = round(1.60  * Np * C * T, 2)
+
+        Volume_cubico = round(Volume_util / 1000, 2)
+        Secao_horizontal = round(Volume_cubico/1.80, 2)
+
+        self.screenmanager.current = "resultado_filtro_anaerobio"
+        self.screenmanager.transition.direction = "left"
+
+        self.screenmanager.get_screen('resultado_filtro_anaerobio').ids.label_resultado_filtro_anaerobio.text = f'{Volume_util} litros'
+
+        self.screenmanager.get_screen('resultado_filtro_anaerobio').ids.label_resultado_secao_horizontal.text = f'{Secao_horizontal} m²'
+
+        global APP
+        APP = self
+
 
 Fossilita().run()

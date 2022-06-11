@@ -5,18 +5,26 @@ Manager:
 <Manager>
 
     # Primeira tela a carregar, o resto são listas de telas válidas
+    InformacoesImportantesScreen:
+        name: "informacoes_importantes"
+    # PDFS
+    IntervaloDeLimpezaScreen:
+        name: "intervalo_de_limpeza"
+
+    
     FiltroAnaerobioScreen:
         name: "filtro_anaerobio"
     ResultadoFossaScreen:
         name: "resultado_fossa"
+    ResultadoFiltroAnaerobioScreen:
+        name: "resultado_filtro_anaerobio"
     HomeScreen:
         name: "home"
-    InformacoesImportantesScreen:
-        name: "informacoes_importantes"
     CalculoDeVolumeScreen:
         name: "calculo_de_volume"
     TipoDeEdificacaoScreen:
         name: "tipo_de_edificacao"
+    
 
 <HomeScreen>
     MDFloatLayout:
@@ -92,6 +100,8 @@ Manager:
             text: "Intervalo de Limpeza"
             pos_hint: {"center_x": .5, "center_y": .62}
             size_hint_x: 0.8
+            on_release:
+                app.change_intervalo_de_limpeza_screen()
         
         MDRaisedButton:
             text: "Funcionamento do Tanque Séptico"
@@ -348,6 +358,78 @@ Manager:
             size_hint_x: 0.8
             on_release: app.return_left_to('informacoes_importantes')
 
+<ResultadoFiltroAnaerobioScreen>
+
+    MDFloatLayout:
+
+        MDTopAppBar:
+            title: "Filtro Anaeróbio"
+            pos_hint: {"top": 1}
+            left_action_items: [["arrow-left", lambda x: app.return_right_to('filtro_anaerobio')], ["check-bold"]]
+            right_action_items: [["home", lambda x: app.return_to_home()]]
+
+        MDLabel:
+            text: "O volume útil ideal para sua fossa é de:"
+            font_style: "H6"
+            pos_hint: {"center_x": .5, "center_y": .8}
+            color: '#35506d'
+            text_size: self.width * 0.82, None
+            size_hint: 1, None
+            height: self.texture_size[1]
+
+        MDLabel:
+            id: label_resultado_filtro_anaerobio
+            text: "12345,67 litros"
+            font_style: "H4"
+            pos_hint: {"center_x": .5, "center_y": .71}
+            color: '#35506d'
+            text_size: self.width * 0.82, None
+            size_hint: 1, None
+            height: self.texture_size[1]
+
+        MDLabel:
+            text: "Sessão Horizontal:"
+            font_style: "H6"
+            pos_hint: {"center_x": .5, "center_y": .63}
+            color: '#35506d'
+            text_size: self.width * 0.82, None
+            size_hint: 1, None
+            height: self.texture_size[1]
+
+        MDLabel:
+            id: label_resultado_secao_horizontal
+            text: "12345,67 litros"
+            font_style: "H4"
+            pos_hint: {"center_x": .5, "center_y": .57}
+            color: '#35506d'
+            text_size: self.width * 0.82, None
+            size_hint: 1, None
+            height: self.texture_size[1]
+
+        MDLabel:
+            text: "Agora, você precisa dimensionar um tanque séptico que comporte tudo isso!"
+            font_style: "H6"
+            pos_hint: {"center_x": .5, "center_y": .46}
+            color: '#35506d'
+            text_size: self.width * 0.82, None
+            size_hint: 1, None
+            height: self.texture_size[1]
+
+        MDLabel:
+            text: "Por que não passa na nossa seção de Informações Importantes e confere as dicas e legislação pertinente?"
+            font_style: "H6"
+            pos_hint: {"center_x": .5, "center_y": .29}
+            color: '#35506d'
+            text_size: self.width * 0.82, None
+            size_hint: 1, None
+            height: self.texture_size[1]
+
+        MDRaisedButton:
+            text: "Me leve lá!"
+            pos_hint: {"center_x": .5, "center_y": .13}
+            size_hint_x: 0.8
+            on_release: app.return_left_to('informacoes_importantes')
+
 <FiltroAnaerobioScreen>
     MDFloatLayout:
 
@@ -407,5 +489,70 @@ Manager:
             text: "Mostre-me o resultado!"
             pos_hint: {"center_x": .5, "center_y": .49}
             size_hint_x: 0.8
-            on_release: app.calculate_volume_util()
+            on_release: app.calculate_filtro_anaerobio()
 
+<IntervaloDeLimpezaScreen>
+
+    MDFloatLayout:
+
+        MDTopAppBar:
+            title: "Filtro Anaeróbio"
+            pos_hint: {"top": 1}
+            left_action_items: [["arrow-left", lambda x: app.return_right_to('informacoes_importantes')],["check-bold"]]
+            right_action_items: [["home", lambda x: app.return_to_home()]]
+
+        MDLabel:
+            text: "Intervalo de Limpeza"
+            halign: "left"
+            pos_hint: {"center_x": .5, "center_y": .82}
+            size_hint_x: 0.79
+            font_style: "H6"
+            color: '#35506d'
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 1, 1
+                Line:
+                    width: 1
+                    points: [self.x, self.height - self.y * 0.64, self.x + self.width, self.height - self.y * 0.64]
+
+    MDBoxLayout:
+        id: box_layout
+        size_hint_x: .8
+        orientation: 'vertical'
+        adaptive_height: True
+        pos_hint: {'top': .75, "center_x": .5}
+    
+        ScrollView:
+            id: intervalo_de_limpeza_scrollview
+            size_hint: (1, None)
+            do_scroll_x: False
+            do_scroll_y: True
+
+            MDBoxLayout:
+                id: box_layout
+                orientation: 'vertical'
+                adaptive_height: True
+                pos_hint: {'top': .75, "center_x": .5}
+
+                MDLabel:
+                    id: text_field
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    text:
+                        "O intervalo de limpeza depende do tipo de edificação e da quantidade de unidades de contribuição, sejam pessoas ou número de refeições, por exemplo - bem como o tamanho do tanque.\n\nEntretanto, recomenda-se que a limpeza seja feita em um período trienal - isto é, de três em três anos - mas, se o volume de água for muito grande, como por exemplo no caso de um hotel, é interessante que adote-se a limpeza anual, evitando problemas.\n\nO ideal é que não se espere para chamar o caminhão apenas quando a fossa estiver dando problemas! Quando os ralos e o vaso sanitário começam a apresentar mau cheiro e drenagem lenta, a descarga começa a borbulhar quando acionada e são percebidas infiltrações na tampa da caixa de gordura ou fossa significa que já não há mais o que fazer - é preciso fazer a limpeza imediatamente.\n"
+
+                Image:
+                    source: 'cat.jpg'
+                    size: self.texture_size
+                    size_hint_y: None
+                    height: 100
+                    text_size: self.width, None
+
+                MDLabel:
+                    id: text_field
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    text:
+                        "\nO intervalo de limpeza depende do tipo de edificação e da quantidade de unidades de contribuição, sejam pessoas ou número de refeições, por exemplo - bem como o tamanho do tanque.\n\nEntretanto, recomenda-se que a limpeza seja feita em um período trienal - isto é, de três em três anos - mas, se o volume de água for muito grande, como por exemplo no caso de um hotel, é interessante que adote-se a limpeza anual, evitando problemas.\n\nO ideal é que não se espere para chamar o caminhão apenas quando a fossa estiver dando problemas! Quando os ralos e o vaso sanitário começam a apresentar mau cheiro e drenagem lenta, a descarga começa a borbulhar quando acionada e são percebidas infiltrações na tampa da caixa de gordura ou fossa significa que já não há mais o que fazer - é preciso fazer a limpeza imediatamente.\n"
