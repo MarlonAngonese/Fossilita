@@ -10,8 +10,17 @@ Manager:
     # PDFS
     IntervaloDeLimpezaScreen:
         name: "intervalo_de_limpeza"
+    FuncionamentoDoTanqueSepticoScreen:
+        name: "funcionamento_tanque_septico"
+    DimensionamentoDeTanqueSepticoScreen:
+        name: "dimensionamento_tanque_septico"
+    DimensionamentoDaValaDeInfiltracaoScreen:
+        name: "dimensionamento_vala_infiltracao"
+    TiposDeSumidouroScreen:
+        name: "tipos_sumidouros"
+    ManualDeBoasPraticasScreen:
+        name: "manual_boas_praticas"
 
-    
     FiltroAnaerobioScreen:
         name: "filtro_anaerobio"
     ResultadoFossaScreen:
@@ -92,46 +101,52 @@ Manager:
             color: '#35506d'
 
         MDRaisedButton:
-            text: "Sistema de Tratamento"
+            text: "Intervalo de Limpeza"
             pos_hint: {"center_x": .5, "center_y": .7}
             size_hint_x: 0.8
-
-        MDRaisedButton:
-            text: "Intervalo de Limpeza"
-            pos_hint: {"center_x": .5, "center_y": .62}
-            size_hint_x: 0.8
+            size_hint_y: 0.08
             on_release:
-                app.change_intervalo_de_limpeza_screen()
+                app.change_information_screen("intervalo_de_limpeza")
         
         MDRaisedButton:
             text: "Funcionamento do Tanque Séptico"
-            pos_hint: {"center_x": .5, "center_y": .54}
+            pos_hint: {"center_x": .5, "center_y": .59}
             size_hint_x: 0.8
+            size_hint_y: 0.08
+            on_release:
+                app.change_information_screen("funcionamento_tanque_septico")
 
         MDRaisedButton:
-            text: "Dimensionamento de Tanque Séptico"
-            pos_hint: {"center_x": .5, "center_y": .46}
+            text: "Dimensionamento de Tanque Séptico e\n Dimensionamento do Filtro Anaeróbio"
+            pos_hint: {"center_x": .5, "center_y": .48}
             size_hint_x: 0.8
+            size_hint_y: 0.08
+            on_release:
+                app.change_information_screen("dimensionamento_tanque_septico")
 
         MDRaisedButton:
-            text: "Dimensionamento de Filtro Anaeróbio"
-            pos_hint: {"center_x": .5, "center_y": .38}
+            text: "Dimensionamento da Vala de Infiltração"
+            pos_hint: {"center_x": .5, "center_y": .37}
             size_hint_x: 0.8
+            size_hint_y: 0.08
+            on_release:
+                app.change_information_screen("dimensionamento_vala_infiltracao")
 
         MDRaisedButton:
             text: "Tipos de Sumidouro e Como Calcular"
-            pos_hint: {"center_x": .5, "center_y": .30}
+            pos_hint: {"center_x": .5, "center_y": .26}
             size_hint_x: 0.8
-
-        MDRaisedButton:
-            text: "Dimensionamento de Vala de Infiltração"
-            pos_hint: {"center_x": .5, "center_y": .22}
-            size_hint_x: 0.8
+            size_hint_y: 0.08
+            on_release:
+                app.change_information_screen("tipos_sumidouros")
 
         MDRaisedButton:
             text: "Manual de Boas Práticas"
-            pos_hint: {"center_x": .5, "center_y": .14}
+            pos_hint: {"center_x": .5, "center_y": .15}
             size_hint_x: 0.8
+            size_hint_y: 0.08
+            on_release:
+                app.change_information_screen("manual_boas_praticas")
 
 <CalculoDeVolumeScreen>
     MDFloatLayout:
@@ -225,12 +240,6 @@ Manager:
             height: self.texture_size[1]
             font_style: "Caption"
             color: '#35506d'
-            canvas.before:
-                Color:
-                    rgba: 0, .4, 1, .2
-                Rectangle:
-                    pos: (0, self.center_y - 46)
-                    size: (self.width, self.height * 1.5)
 
         MDRaisedButton:
             id: send_button
@@ -496,7 +505,7 @@ Manager:
     MDFloatLayout:
 
         MDTopAppBar:
-            title: "Filtro Anaeróbio"
+            title: "Informações Importantes"
             pos_hint: {"top": 1}
             left_action_items: [["arrow-left", lambda x: app.return_right_to('informacoes_importantes')],["check-bold"]]
             right_action_items: [["home", lambda x: app.return_to_home()]]
@@ -523,7 +532,7 @@ Manager:
         pos_hint: {'top': .75, "center_x": .5}
     
         ScrollView:
-            id: intervalo_de_limpeza_scrollview
+            id: scrollview
             size_hint: (1, None)
             do_scroll_x: False
             do_scroll_y: True
@@ -542,11 +551,155 @@ Manager:
                     text:
                         "O intervalo de limpeza depende do tipo de edificação e da quantidade de unidades de contribuição, sejam pessoas ou número de refeições, por exemplo - bem como o tamanho do tanque.\n\nEntretanto, recomenda-se que a limpeza seja feita em um período trienal - isto é, de três em três anos - mas, se o volume de água for muito grande, como por exemplo no caso de um hotel, é interessante que adote-se a limpeza anual, evitando problemas.\n\nO ideal é que não se espere para chamar o caminhão apenas quando a fossa estiver dando problemas! Quando os ralos e o vaso sanitário começam a apresentar mau cheiro e drenagem lenta, a descarga começa a borbulhar quando acionada e são percebidas infiltrações na tampa da caixa de gordura ou fossa significa que já não há mais o que fazer - é preciso fazer a limpeza imediatamente.\n"
 
+<DimensionamentoDeTanqueSepticoScreen>
+
+    MDFloatLayout:
+
+        MDTopAppBar:
+            title: "Informações Importantes"
+            pos_hint: {"top": 1}
+            left_action_items: [["arrow-left", lambda x: app.return_right_to('informacoes_importantes')],["check-bold"]]
+            right_action_items: [["home", lambda x: app.return_to_home()]]
+
+        MDLabel:
+            text: "Dimensionamento do Tanque Séptico e Filtro Anaeróbio"
+            halign: "left"
+            pos_hint: {"center_x": .5, "center_y": .83}
+            size_hint_x: 0.79
+            font_style: "H6"
+            color: '#35506d'
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 1, 1
+                Line:
+                    width: 1
+                    points: [self.x, self.height - self.y * 0.64, self.x + self.width, self.height - self.y * 0.64]
+
+        MDBoxLayout:
+            id: box_layout
+            size_hint_x: .8
+            orientation: 'vertical'
+            adaptive_height: True
+            pos_hint: {'top': .75, "center_x": .5}
+        
+            ScrollView:
+                id: scrollview
+                size_hint: (1, None)
+                do_scroll_x: False
+                do_scroll_y: True
+
+                MDBoxLayout:
+                    id: box_layout
+                    orientation: 'vertical'
+                    adaptive_height: True
+                    pos_hint: {'top': .75, "center_x": .5}
+
+                    MDLabel:
+                        id: text_field
+                        size_hint_y: None
+                        height: self.texture_size[1]
+                        text_size: self.width, None
+                        text: "\nOs tanques sépticos e filtros podem ser cilíndricos ou prismáticos retangulares, onde:\n\n        -   Os cilíndricos são empregados em situações onde se pretende minimizar a área útil em favor da profundidade. Calcula-se através da seguinte fórmula, utilizando o volume útil, e o raio ou altura desejados:\n"
+
+                    MDLabel:
+                        id: text_field
+                        size_hint_y: None
+                        height: self.texture_size[1]
+                        text_size: self.width, None
+                        halign: "center"
+                        text: "Vreal = π*r²*h\n"
+
+                    Image:
+                        source: 'imgs/prismatico.png'
+                        size: self.texture_size
+                        size_hint_y: None
+                        height: 300
+                        text_size: self.width, None
+
+                    MDLabel:
+                        id: text_field
+                        size_hint_y: None
+                        height: self.texture_size[1]
+                        text_size: self.width, None
+                        text: "\n        -   Os prismáticos retangulares são empregados em casos que sejam desejáveis maior área horizontal e menor profundidade. É possível obter seu tamanho com a razão a seguir, possuindo a dimensão de pelo menos dois dos lados do tanque e o seu volume útil:\n"
+
+                    MDLabel:
+                        id: text_field
+                        size_hint_y: None
+                        height: self.texture_size[1]
+                        text_size: self.width, None
+                        halign: "center"
+                        text: "Vreal = a*b*c\n"
+
+                    Image:
+                        source: 'imgs/prismatico_retangular.png'
+                        size: self.texture_size
+                        size_hint_y: None
+                        height: 300
+                        text_size: self.width, None
+
+                    MDLabel:
+                        id: text_field
+                        size_hint_y: None
+                        height: self.texture_size[1]
+                        text_size: self.width, None
+                        text: "\nRessaltamos que devem estar localizados, preferencialmente, na frente das edificações, assim, facilitando a limpeza e futura ligação ao coletor público. Além disso, deve-se observar as distâncias horizontais mínimas:\n\n        -   1,50 m de construções, limites do lote, sumidouro, vala de infiltração e ramal predial de água;\n        -   3,00 m de árvores e de qualquer ponto da rede pública de abastecimento de água;\n        -   15,00 m de poços freáticos e de corpos de água de qualquer natureza.\n"
+
+<FuncionamentoDoTanqueSepticoScreen>
+
+    MDFloatLayout:
+
+        MDTopAppBar:
+            title: "Informações Importantes"
+            pos_hint: {"top": 1}
+            left_action_items: [["arrow-left", lambda x: app.return_right_to('informacoes_importantes')],["check-bold"]]
+            right_action_items: [["home", lambda x: app.return_to_home()]]
+
+        MDLabel:
+            text: "Funcionamento do Tanque Séptico"
+            halign: "left"
+            pos_hint: {"center_x": .5, "center_y": .83}
+            size_hint_x: 0.79
+            font_style: "H6"
+            color: '#35506d'
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 1, 1
+                Line:
+                    width: 1
+                    points: [self.x, self.height - self.y * 0.64, self.x + self.width, self.height - self.y * 0.64]
+
+    MDBoxLayout:
+        id: box_layout
+        size_hint_x: .8
+        orientation: 'vertical'
+        adaptive_height: True
+        pos_hint: {'top': .75, "center_x": .5}
+    
+        ScrollView:
+            id: scrollview
+            size_hint: (1, None)
+            do_scroll_x: False
+            do_scroll_y: True
+
+            MDBoxLayout:
+                id: box_layout
+                orientation: 'vertical'
+                adaptive_height: True
+                pos_hint: {'top': .75, "center_x": .5}
+
+                MDLabel:
+                    id: text_field
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    text: "\nO sistema de tratamento é composto de:\n\n        -   Tratamento primário: tanque séptico;\n        -   Tratamento complementar: filtro anaeróbico, filtro aeróbico, vala de filtração;\n        -   Disposição final: sumidouro, vala de infiltração.\n\nO tanque séptico é uma unidade de tratamento de esgoto doméstico, construída em alvenaria (ou outro material estanque), que detêm despejos por um período de tempo estabelecido, permitindo a decantação dos sólidos, retenção de material graxo, promovendo a transformação bioquímica em substâncias e compostos mais simples e estáveis.\nSomente é indicado em áreas desprovidas de rede pública de coleta ou para retenção dos sólidos sedimentáveis quando a rede existente não tem diâmetro e/ou declividade suficiente.\nA NBR 7729 classifica os tanques sépticos em função da compatimentação de suas câmaras em dois tipos:\n\n        -   Tanque séptico de câmara única: unidade de tratamento de apenas 1 compartimento;\n        -   Tanque séptico de câmaras em série: unidade de tratamento com dois ou mais compartimentos dispostos sequencialmente no sentido do fluxo do líquido e interligados adequadamente\n\nSeu funcionamento acontece, basicamente, da seguinte forma:\n\n        -   Digestão: o lodo e a escuma são modificados pelas bactérias anaeróbias, provacando uma destruição total ou parcial de organismos patogênicos;\n        -   Redução de volume: a digestão provoca uma redução de volume dos sólidos, por transformar parte do sólido em líquidos e gases;\n        -   Após a digestão, os efluentes líquidos, mais estáveis, podem ser lançados em sumidouros, valas de infiltração ou outro corpo receptor."
+
                 Image:
-                    source: 'cat.jpg'
+                    source: 'imgs/tanque_septico.png'
                     size: self.texture_size
                     size_hint_y: None
-                    height: 100
+                    height: 300
                     text_size: self.width, None
 
                 MDLabel:
@@ -554,5 +707,238 @@ Manager:
                     size_hint_y: None
                     height: self.texture_size[1]
                     text_size: self.width, None
-                    text:
-                        "\nO intervalo de limpeza depende do tipo de edificação e da quantidade de unidades de contribuição, sejam pessoas ou número de refeições, por exemplo - bem como o tamanho do tanque.\n\nEntretanto, recomenda-se que a limpeza seja feita em um período trienal - isto é, de três em três anos - mas, se o volume de água for muito grande, como por exemplo no caso de um hotel, é interessante que adote-se a limpeza anual, evitando problemas.\n\nO ideal é que não se espere para chamar o caminhão apenas quando a fossa estiver dando problemas! Quando os ralos e o vaso sanitário começam a apresentar mau cheiro e drenagem lenta, a descarga começa a borbulhar quando acionada e são percebidas infiltrações na tampa da caixa de gordura ou fossa significa que já não há mais o que fazer - é preciso fazer a limpeza imediatamente.\n"
+                    italic: True
+                    halign: "center"
+                    text: "Imagem: Funcionamento do Tanque Séptico (ResearchGate)"
+
+<DimensionamentoDaValaDeInfiltracaoScreen>
+
+    MDFloatLayout:
+
+        MDTopAppBar:
+            title: "Informações Importantes"
+            pos_hint: {"top": 1}
+            left_action_items: [["arrow-left", lambda x: app.return_right_to('informacoes_importantes')],["check-bold"]]
+            right_action_items: [["home", lambda x: app.return_to_home()]]
+
+        MDLabel:
+            text: "Dimensionamento de Vala de Infiltração"
+            halign: "left"
+            pos_hint: {"center_x": .5, "center_y": .83}
+            size_hint_x: 0.79
+            font_style: "H6"
+            color: '#35506d'
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 1, 1
+                Line:
+                    width: 1
+                    points: [self.x, self.height - self.y * 0.64, self.x + self.width, self.height - self.y * 0.64]
+
+    MDBoxLayout:
+        id: box_layout
+        size_hint_x: .8
+        orientation: 'vertical'
+        adaptive_height: True
+        pos_hint: {'top': .75, "center_x": .5}
+    
+        ScrollView:
+            id: scrollview
+            size_hint: (1, None)
+            do_scroll_x: False
+            do_scroll_y: True
+
+            MDBoxLayout:
+                id: box_layout
+                orientation: 'vertical'
+                adaptive_height: True
+                pos_hint: {'top': .75, "center_x": .5}
+
+                MDLabel:
+                    id: text_field
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    text: "\nO sistema de vala de infiltração consiste em um conjunto de canalizações assentado a uma profundidade determinada, em um solo cujas características permitam a absorção do esgoto efluente do tanque séptico. A percolação do líquido através do solo permitirá a mineralização dos esgotos, antes que os mesmos se transformem em fonte de contaminação das águas subterrâneas e de superfície. A área por onde são assentadas as canalizações de infiltração também são chamados de “campo de nitrificação”.\nSua profundidade pode ser obtida através da razão:\n"
+
+                MDLabel:
+                    id: text_field
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    halign: "center"
+                    text: "A = Vc/Km\n"
+
+                MDLabel:
+                    id: text_field
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    text: "\nOnde é possível obter a variável Vc pela multiplicação do número de unidades de contribuição pela contribuição de despejos. O coeficiente Km é chamado coeficiente de percolação do solo, obtido através de teste, variando de região para região.\nAs valas de infiltração aceitam apenas o formato prismático, sendo possível descobrir os valores das variáveis através de:\n"
+
+                MDLabel:
+                    id: text_field
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    halign: "center"
+                    text: "A = b * L + 2 * a * L\n"
+
+                MDLabel:
+                    id: text_field
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    text: "\nOnde b consiste na dimensão de sua base, L na sua largura total e a na altura das paredes absorventes.\nAlguns pontos são importantes e devem ser levados em consideração se tratando de valas de infiltração:\n\n        -   Nas valas escavadas em terreno que possuírem profundidade entre 60cm e 1m, largura mínima de 50cm e máxima de 1m, devem ser assentados tubos de drenagem de no mínimo 100mm de diâmetro;\n        -   O comprimento máximo de uma vala de infiltr é de 30m;\n        -   A declividade da tubulação deve ser de 1:300 a 1:500;\n        -   A tubulação deve ser envolvida em material filtrante apropriado e recomendável para cada tipo de tubo de drenagem empregado, considerando que sua geratriz deve estar a 30cm acima da soleira das valas de 50cm de largura ou até 60cm para valas de 1m de largura;\n        -   Sobre a câmara filtrante deve ser colocado papelão alcatroado, laminado de plástico, filme de termoplástico ou similar, antes de ser efetuado o enchimento restante da vala com terra.\n"
+
+<TiposDeSumidouroScreen>
+
+    MDFloatLayout:
+
+        MDTopAppBar:
+            title: "Informações Importantes"
+            pos_hint: {"top": 1}
+            left_action_items: [["arrow-left", lambda x: app.return_right_to('informacoes_importantes')],["check-bold"]]
+            right_action_items: [["home", lambda x: app.return_to_home()]]
+
+        MDLabel:
+            text: "Tipos de Sumidouros e Como Calcular"
+            halign: "left"
+            pos_hint: {"center_x": .5, "center_y": .83}
+            size_hint_x: 0.79
+            font_style: "H6"
+            color: '#35506d'
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 1, 1
+                Line:
+                    width: 1
+                    points: [self.x, self.height - self.y * 0.64, self.x + self.width, self.height - self.y * 0.64]
+
+    MDBoxLayout:
+        id: box_layout
+        size_hint_x: .8
+        orientation: 'vertical'
+        adaptive_height: True
+        pos_hint: {'top': .75, "center_x": .5}
+    
+        ScrollView:
+            id: scrollview
+            size_hint: (1, None)
+            do_scroll_x: False
+            do_scroll_y: True
+
+            MDBoxLayout:
+                id: box_layout
+                orientation: 'vertical'
+                adaptive_height: True
+                pos_hint: {'top': .75, "center_x": .5}
+
+                MDLabel:
+                    id: text_field
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    text: "\nOs sumidouros também conhecidos como poços ou fossas absorventes, são escavações feitas no terreno para receber os efluentes do tanque séptico, que se infiltram no solo através das aberturas na parede. A área de infiltração necessária, em m², é calculada através da razão:\n"
+
+                MDLabel:
+                    id: text_field
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    halign: "center"
+                    text: "A = Vc/Km\n"
+
+                MDLabel:
+                    id: text_field
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    text: "\nOnde é possível obter a variável Vc pela multiplicação do número de unidades de contribuição pela contribuição de despejos. O coeficiente Km é chamado coeficiente de percolação do solo, obtido através de teste, variando de região para região.\nOs sumidouros devem ser construídos com paredes de alvenaria de tijolos, assentes com juntas livres, ou de anéis (ou placas) pré-moldados de concreto. No fundo, devem possuir enchimento de cascalho, coque ou brita no 3 ou 4, com altura igual ou superior a 50cm. Eles também podem ser cilíndricos ou prismáticos, de acordo com as seguintes razões:        -   Cilíndricos:\n"
+
+                MDLabel:
+                    id: text_field
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    halign: "center"
+                    text: "A = π*r²*h + 2π*r*h\n"
+
+                Image:
+                    source: 'imgs/prismatico.png'
+                    size: self.texture_size
+                    size_hint_y: None
+                    height: 300
+                    text_size: self.width, None
+
+                MDLabel:
+                    id: text_field
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    text: "\n        -   Prismáticos:\n"
+
+                MDLabel:
+                    id: text_field
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    halign: "center"
+                    text: "A = b*c + 2*a*b +2*a*c\n"
+
+                Image:
+                    source: 'imgs/prismatico_retangular.png'
+                    size: self.texture_size
+                    size_hint_y: None
+                    height: 300
+                    text_size: self.width, None
+
+<ManualDeBoasPraticasScreen>
+
+    MDFloatLayout:
+
+        MDTopAppBar:
+            title: "Informações Importantes"
+            pos_hint: {"top": 1}
+            left_action_items: [["arrow-left", lambda x: app.return_right_to('informacoes_importantes')],["check-bold"]]
+            right_action_items: [["home", lambda x: app.return_to_home()]]
+
+        MDLabel:
+            text: "Tipos de Sumidouros e Como Calcular"
+            halign: "left"
+            pos_hint: {"center_x": .5, "center_y": .83}
+            size_hint_x: 0.79
+            font_style: "H6"
+            color: '#35506d'
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 1, 1
+                Line:
+                    width: 1
+                    points: [self.x, self.height - self.y * 0.64, self.x + self.width, self.height - self.y * 0.64]
+
+    MDBoxLayout:
+        id: box_layout
+        size_hint_x: .8
+        orientation: 'vertical'
+        adaptive_height: True
+        pos_hint: {'top': .75, "center_x": .5}
+    
+        ScrollView:
+            id: scrollview
+            size_hint: (1, None)
+            do_scroll_x: False
+            do_scroll_y: True
+
+            MDBoxLayout:
+                id: box_layout
+                orientation: 'vertical'
+                adaptive_height: True
+                pos_hint: {'top': .75, "center_x": .5}
+
+                MDLabel:
+                    id: text_field
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    text: "\nLimpeza de fossa é sempre uma dor de cabeça, não é mesmo? Mas, assim como a caixa de gordura, algumas pequenas ações podem evitar problemas futuros. Confira:\n\n1 - O que fazer com aquela gordura da frigideira reutilizada várias vezes? Com certeza NÃO é no vaso sanitário que você deve descartar. Isso desequilibra os processos biológicos de digestão, prejudicando seu equipamento!\n\n2 - Jamais negligencie a limpeza! Assim, você não coloca a sua vida e a de outras pessoas em risco. Por isso, recomenda-se que a limpeza seja feita anualmente, evitando que você esqueça!\n\n3 - Esgoto e água pluvial NUNCA devem se encontrar! Mais uma vez, isso prejudica o trabalho das bactérias na transformação do dejeto em lodo.\n\n4 - Tenha cuidado em nunca colocar objetos pesados em cima da tampa da fossa, evitando quebrá-la. Os gases produzidos em seu interior são altamente inflamáveis e representam risco se escaparem - além dos insetos e mau cheiro.\n\n5 - Atente-se às plantas de raízes profundas próximas à fossa, pois as mesmas podem danificar o equipamento.\n\n6 - Não use água quente ou soda cáustica para resolver o problema de entupimento, seja nos canos ou no próprio tanque séptico. Além de representarem risco para a sua saúde, também danificam o encanamento e a aparelhagem da fossa.\n"

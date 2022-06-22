@@ -36,7 +36,11 @@ class Manager(ScreenManager):
                 APP.return_right_to('calculo_de_volume')
                 return True
 
-            if (APP.screenmanager.current == 'intervalo_de_limpeza'):
+            if (APP.screenmanager.current == 'resultado_filtro_anaerobio'):
+                APP.return_right_to('filtro_anaerobio')
+                return True
+
+            if (APP.screenmanager.current == 'intervalo_de_limpeza' or APP.screenmanager.current == 'funcionamento_tanque_septico' or APP.screenmanager.current == 'dimensionamento_tanque_septico' or APP.screenmanager.current == 'dimensionamento_vala_infiltracao' or APP.screenmanager.current == 'tipos_sumidouros' or APP.screenmanager.current == 'manual_boas_praticas'):
                 APP.return_right_to('informacoes_importantes')
                 return True
 
@@ -65,6 +69,20 @@ class FiltroAnaerobioScreen(MDScreen):
 class IntervaloDeLimpezaScreen(MDScreen):
     pass
 
+class FuncionamentoDoTanqueSepticoScreen(MDScreen):
+    pass
+
+class DimensionamentoDeTanqueSepticoScreen(MDScreen):
+    pass
+
+class DimensionamentoDaValaDeInfiltracaoScreen(MDScreen):
+    pass
+
+class TiposDeSumidouroScreen(MDScreen):
+    pass
+
+class ManualDeBoasPraticasScreen(MDScreen):
+    pass
 class Fossilita(MDApp):
 
     def __init__(self, **kwargs):
@@ -85,7 +103,7 @@ class Fossilita(MDApp):
         self.screenmanager.current = "tipo_de_edificacao"
         self.screenmanager.transition.direction = "left"
 
-        self.screenmanager.get_screen('tipo_de_edificacao').ids.tipo_de_edificacao_scrollview.size = (Window.width, Window.height)
+        self.screenmanager.get_screen('tipo_de_edificacao').ids.tipo_de_edificacao_scrollview.size = (Window.width, Window.height - Window.height * 0.27)
 
         CURRENT_SCREEN = screen
         global APP
@@ -140,11 +158,11 @@ class Fossilita(MDApp):
         global APP
         APP = self
 
-    def change_intervalo_de_limpeza_screen(self):
-        self.screenmanager.current = "intervalo_de_limpeza"
+    def change_information_screen(self, screen):
+        self.screenmanager.current = screen
         self.screenmanager.transition.direction = "left"
 
-        self.screenmanager.get_screen('intervalo_de_limpeza').ids.intervalo_de_limpeza_scrollview.size = (Window.width, Window.height)
+        self.screenmanager.get_screen(screen).ids.scrollview.size = (Window.width, Window.height - Window.height * 0.27)
 
         global APP
         APP = self
