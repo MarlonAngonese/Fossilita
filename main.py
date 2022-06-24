@@ -5,9 +5,9 @@ from kivymd.app import MDApp
 from kivy.uix.screenmanager import ScreenManager
 from kivymd.uix.screen import MDScreen
 
-Window.size = (350 , 640)
-CURRENT_SCREEN = False;
-APP = False;
+# Window.size = (350 , 640)
+CURRENT_SCREEN = False
+APP = False
 
 class Manager(ScreenManager):
     def __init__(self,**kwargs):
